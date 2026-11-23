@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install -r app/requirements.txt -r app/requirements-dev.txt
+
+      - name: Lancer les tests
+        run: pytest -v
+        working-directory: app
+
+      - name: Construire l'image Docker
+        run: docker build -t devops-lab:ci ./app
