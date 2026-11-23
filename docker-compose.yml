@@ -1,0 +1,12 @@
+services:
+  web:
+    image: ghcr.io/alpotj/devops-lab:latest
+    container_name: devops-lab
+    ports:
+      - "8080:5000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
