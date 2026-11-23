@@ -53,3 +53,14 @@ jobs:
           tags: |
             ghcr.io/alpotj/devops-lab:latest
             ghcr.io/alpotj/devops-lab:${{ github.sha }}
+
+  deploy:
+    needs: publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Déployer sur la machine locale
+        run: ./deploy.sh
